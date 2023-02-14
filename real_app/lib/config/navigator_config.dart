@@ -17,9 +17,10 @@ class Configuration{
 
   static List<NavigatorInfo> ADMIN_NAVIGATOR_lIST = [
     NavigatorInfo(iconData: Icons.home,label: "Home",route: "/admin-home",tooltip: "Home",isActive: true,bodyComponent: const HomeBody()),
-    NavigatorInfo(iconData: Icons.groups,label: "Groups",route: "/admin-groups",tooltip: "Groups", bodyComponent: const GroupBody()),
-    NavigatorInfo(iconData: Icons.chat_sharp,label: "Chat",route: "/admin-chat",tooltip: "Chat"),
+    NavigatorInfo(iconData: Icons.groups,label: "Groups",route: "/admin-groups",tooltip: "Groups", bodyComponent: GroupBody()),
     NavigatorInfo(iconData: Icons.fastfood_outlined,label: "Meals",route: "/admin-meal",tooltip: "Meals", bodyComponent: const MealBody()),
-    NavigatorInfo(iconData: Icons.money,label: "Money",route: "/admin-money",tooltip: "Money", bodyComponent: const MoneyBody()),
+    NavigatorInfo(iconData: CupertinoIcons.chat_bubble_2,label: "Chat",route: "/admin-chat",tooltip: "Chat"),
+    NavigatorInfo(iconData: CupertinoIcons.money_dollar_circle,label: "Money",route: "/admin-money",tooltip: "Money", bodyComponent: const MoneyBody()),
+    NavigatorInfo(iconData: CupertinoIcons.settings,label: "Setting",route: "/admin-setting",tooltip: "Setting",),
   ];
 }

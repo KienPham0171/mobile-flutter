@@ -38,6 +38,10 @@ dependencies:
   equatable: ^2.0.0
   redux: ^5.0.0
   flutter_redux: ^0.8.2
+  intl: ^0.18.0
+  shimmer: ^2.0.0
+  dropdown_button2: ^1.9.2
+
 
 dev_dependencies:
   flutter_test:

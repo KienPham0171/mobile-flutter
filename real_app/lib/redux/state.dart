@@ -16,7 +16,6 @@ AppState appStateReducer(AppState state,action) =>
 class AppState extends Equatable{
   final UserInfo userInfo;
 
-
   AppState(this.userInfo);
 
   @override

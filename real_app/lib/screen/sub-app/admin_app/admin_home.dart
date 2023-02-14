@@ -43,16 +43,18 @@ class _AdminHomePageState extends State<AdminHomePage> {
       appBar: AppBar(
         title: const Text("Admin Page"),
       ),
-      body:  Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            createBodyWidget(context, adminController),
-            ElevatedButton(onPressed: (){
-              store.dispatch(UserLogoutAction());
-            }, child: const Text("Logout"),)
-          ],
+      body:  SingleChildScrollView(
+        child: Center(
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              createBodyWidget(context, adminController),
+              ElevatedButton(onPressed: (){
+                store.dispatch(UserLogoutAction());
+              }, child: const Text("Logout"),)
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: AdminNavigator(

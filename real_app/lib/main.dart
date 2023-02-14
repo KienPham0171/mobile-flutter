@@ -5,6 +5,7 @@ import 'package:real_app/redux/action.dart';
 import 'package:real_app/redux/state.dart';
 import 'package:real_app/screen/home_screen.dart';
 import 'package:real_app/screen/login_screen.dart';
+import 'package:real_app/screen/sub-app/admin_app/group_details_screen.dart';
 import 'package:real_app/screen/sub-app/admin_app/meal_screen.dart';
 
 import 'model/user_info.dart';
@@ -20,12 +21,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "My App",
-      theme: ThemeData.light(),
+      theme: ThemeData(primarySwatch: Colors.purple),
       // home: const MyHomePage(),
      routes: {
         PathConstant.INITIAL_ROUTE: (context) => const MyHomePage(),
         PathConstant.LOGIN: (context) => const MyHomePage(),
         PathConstant.MEAL_ROUTE: (context) => const MealScreen(),
+       PathConstant.GROUP_DETAILS: (context) => const GroupDetailScreen(),
 
       },
        initialRoute: PathConstant.INITIAL_ROUTE,
@@ -42,28 +44,6 @@ class MyHomePage extends StatefulWidget {
 Widget createLoginScreen(BuildContext context,UserInfo user){
   return LoginScreen(user: user);
 }
-/*Widget genRealApp(BuildContext context, UserInfo user){
-
-  return Scaffold(
-    body: Center(
-      child: Column(
-        children: [
-          Text("Hello : ${user.userName}"),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text("This is my app"),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(onPressed: (){
-              store.dispatch(UserLogoutAction());
-            }, child: const Text("Logout"),),
-          ),
-        ],
-      ),
-    ),
-  );
-}*/
 
 Widget genRealApp(BuildContext context, UserInfo user){
   return HomePage(user: user);
