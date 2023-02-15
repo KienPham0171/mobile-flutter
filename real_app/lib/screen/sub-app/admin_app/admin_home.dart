@@ -41,19 +41,21 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Admin Page"),
+        title: const Text("Rice-Service"),
       ),
-      body:  SingleChildScrollView(
-        child: Center(
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              createBodyWidget(context, adminController),
-              ElevatedButton(onPressed: (){
-                store.dispatch(UserLogoutAction());
-              }, child: const Text("Logout"),)
-            ],
+      body:  SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                createBodyWidget(context, adminController),
+                ElevatedButton(onPressed: (){
+                  store.dispatch(UserLogoutAction());
+                }, child: const Text("Logout"),)
+              ],
+            ),
           ),
         ),
       ),

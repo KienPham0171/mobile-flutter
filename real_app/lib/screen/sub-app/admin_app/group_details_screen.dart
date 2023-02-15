@@ -83,19 +83,21 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
       return const ShimmerLoader();
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Group Details"),
-      ),
-      // body: Text("Group details with id: ${groupId}"),
-      body: Center(
-        child: buildBody(context),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          invitePopup(context);
-        },
-        child: const Icon(Icons.person_add_outlined),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Group Details"),
+        ),
+        // body: Text("Group details with id: ${groupId}"),
+        body: Center(
+          child: buildBody(context),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            invitePopup(context);
+          },
+          child: const Icon(Icons.person_add_outlined),
+        ),
       ),
     );
   }
