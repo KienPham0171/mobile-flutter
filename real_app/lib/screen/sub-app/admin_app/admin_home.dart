@@ -42,14 +42,34 @@ class _AdminHomePageState extends State<AdminHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Rice-Service"),
+        elevation: 0.0,
       ),
-      body:  SafeArea(
+      body:  Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [
+                0.1,
+                0.4,
+                0.6,
+                0.9,
+              ],
+              colors: [
+                Color.fromRGBO(131,58,180,1),
+                Color.fromRGBO(123,29,253,0.7),
+                Color.fromRGBO(123,29,253,0.5337710084033614),
+                Color.fromRGBO(131,58,180,0.3),
+                // Colors.red,
+                // Colors.indigo,
+                // Colors.teal,
+              ],
+            )
+        ),
         child: SingleChildScrollView(
           reverse: true,
           child: Center(
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 createBodyWidget(context, adminController),
                 ElevatedButton(onPressed: (){

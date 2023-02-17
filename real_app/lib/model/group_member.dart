@@ -14,7 +14,7 @@ class GroupMember extends Equatable{
   @JsonKey(name: "userEmail")
   String memberEmail;
   @JsonKey(name: "phone")
-  String memberPhone;
+  String? memberPhone;
   @JsonKey(name: "totalMoney")
   double money;
 

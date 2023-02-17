@@ -31,19 +31,27 @@ class _AdminNavigatorState extends State<AdminNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-        items: createNavigator(context),
-      type: BottomNavigationBarType.fixed,
-      showUnselectedLabels: false,
-      selectedItemColor: Colors.red,
-      onTap: (index){
-          widget.changeBody(index);
-          setState(() {
-            currentIndex = index;
-          });
-          // Navigator.of(context).pushNamed(navigatorList[index].route);
-      },
-      currentIndex: currentIndex,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Colors.white,width: 1.0)
+        )
+      ),
+      child: BottomNavigationBar(
+        elevation: 0.0,
+          items: createNavigator(context),
+        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: false,
+        selectedItemColor: Colors.red,
+        onTap: (index){
+            widget.changeBody(index);
+            setState(() {
+              currentIndex = index;
+            });
+            // Navigator.of(context).pushNamed(navigatorList[index].route);
+        },
+        currentIndex: currentIndex,
+      ),
     );
   }
 }

@@ -16,6 +16,7 @@ import 'package:real_app/service/meal_service.dart';
 import 'package:real_app/service/user_service.dart';
 import 'package:real_app/style/text_field_style.dart';
 import 'package:real_app/util/date_time_util.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../model/group.dart';
 import '../../../model/group_member.dart';
@@ -425,37 +426,66 @@ class _MealBodyState extends State<MealBody> {
     );
   }
 
+  Widget createFoodImage(){
+    return Container(
+        child: SvgPicture.asset(
+            "assets/food.svg",
+            colorFilter: ColorFilter.mode(Colors.red, BlendMode.srcIn),
+            semanticsLabel: 'A red up arrow',
+          width: 150,
+          height: 150,
+        )
+    );
+  }
 
   Widget createFoodNameWidget(){
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
-      child: TextFormField(
-        // enableInteractiveSelection: false,
-        // focusNode: AlwaysDisabledFocusNode(),
-        // enabled: false,
-        // onTap: (){
-        //   print("tap");
-        // },
-        controller: foodNameController,
-        validator: (value){
-          if(value == null || value.isEmpty){
-            return "Please enter food name.";
-          }
-        },
-        decoration: InputDecoration(
-          focusedBorder: KienInputStyle.inputForcusBoder,
-          enabledBorder: KienInputStyle.enabledBorder,
-          errorBorder: KienInputStyle.errorBorder,
-          focusedErrorBorder: KienInputStyle.forcusErrorBorder,
-          border: KienInputStyle.inputBorder,
-          hintText: "Thit cho",
-          labelText: "Food Name",
-          fillColor: Colors.white,
-          filled: true,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10)
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              // spreadRadius: 5,
+              blurRadius: 4,
+              offset: Offset(4,8), // changes position of shadow
+            ),
+          ],
         ),
-        onSaved: (value){
-        },
-        autofocus: true,
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: TextFormField(
+            controller: foodNameController,
+            validator: (value){
+              if(value == null || value.isEmpty){
+                return "Please enter food name.";
+              }
+            },
+            decoration: InputDecoration(
+              // focusedBorder: KienInputStyle.inputForcusBoder,
+              // enabledBorder: KienInputStyle.enabledBorder,
+              // errorBorder: KienInputStyle.errorBorder,
+              // focusedErrorBorder: KienInputStyle.forcusErrorBorder,
+              // border: KienInputStyle.inputBorder,
+              border: InputBorder.none,
+              hintText: "Thit cho",
+              labelText: "Food Name",
+              fillColor: Colors.white,
+              contentPadding: EdgeInsets.all(10)
+              // filled: true,
+            ),
+            onSaved: (value){
+            },
+            autofocus: true,
+          ),
+        ),
       ),
     );
   }
@@ -573,6 +603,7 @@ class _MealBodyState extends State<MealBody> {
   @override
   Widget build(BuildContext context) {
     List<Widget> formWidgets = [];
+    formWidgets.add(createFoodImage());
     formWidgets.add(createFoodNameWidget());
     formWidgets.add(createBillTotalWidget());
     formWidgets.add(createSelectDate(context));

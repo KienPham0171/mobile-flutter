@@ -11,7 +11,7 @@ GroupMember _$GroupMemberFromJson(Map<String, dynamic> json) => GroupMember(
       json['groupId'] as String,
       json['userName'] as String,
       json['userEmail'] as String,
-      json['phone'] as String,
+      json['phone'] as String?,
       (json['totalMoney'] as num).toDouble(),
     );
 
