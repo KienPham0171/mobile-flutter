@@ -45,6 +45,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
       ),
       body:  SafeArea(
         child: SingleChildScrollView(
+          reverse: true,
           child: Center(
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
@@ -63,6 +64,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
         navigatorList: adminController,
         changeBody: changeBodyContent,
       ),
+      resizeToAvoidBottomInset: true,
     );
   }
 }

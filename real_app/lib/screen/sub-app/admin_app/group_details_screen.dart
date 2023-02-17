@@ -23,8 +23,8 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
   getData() async {
     await Future.delayed(const Duration(seconds: 2)).then((value){
       setState(() {
-        groupMems.add(GroupMember(2, 1, "Pham Kien", DateTime(1998), 127000));
-        groupMems.add(GroupMember(1, 1, "Kien Pham", DateTime(2019), 125000));
+        // groupMems.add(GroupMember(2, 1, "Pham Kien", DateTime(1998), 127000));
+        // groupMems.add(GroupMember(1, 1, "Kien Pham", DateTime(2019), 125000));
         isLoading =false;
       });
     });
@@ -64,7 +64,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
               ],
             ),
             subtitle: Text(
-                "\tTotal Money: ${NumberUtils.currencyFormat(mem.money)}\n\tJoin Date: ${mem.joinDate.toString()}"),
+                "\tTotal Money: ${NumberUtils.currencyFormat(mem.money)}\n\tJoin Date: ${mem.memberEmail.toString()}"),
             trailing: Icon(CupertinoIcons.arrow_2_circlepath_circle),
             onTap: (){
               print("tap index: ${index}");

@@ -1,10 +1,19 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:real_app/client/dio_client_config.dart';
+import 'package:real_app/dto/request/create_meal_request.dart';
+import 'package:real_app/model/base_response.dart';
 import 'package:real_app/model/meal_participant.dart';
 import 'package:real_app/screen/components/common/date_picker_component.dart';
+import 'package:real_app/screen/components/common/loading_component.dart';
+import 'package:real_app/service/group_service.dart';
+import 'package:real_app/service/meal_service.dart';
+import 'package:real_app/service/user_service.dart';
 import 'package:real_app/style/text_field_style.dart';
 import 'package:real_app/util/date_time_util.dart';
 
@@ -20,6 +29,8 @@ class MealBody extends StatefulWidget {
 
 class _MealBodyState extends State<MealBody> {
 
+  bool isBusy = false;
+
   final formKey = GlobalKey<FormState>();
   TextEditingController foodNameController = TextEditingController(text: "");
   TextEditingController billTotalController = TextEditingController(text: "");
@@ -29,7 +40,12 @@ class _MealBodyState extends State<MealBody> {
   final TextEditingController textEditingController = TextEditingController();
   DateTime selectedDate = DateTime.now();
 
-  final List<Group> groupData = [
+  @override
+  void initState() {
+    loadGroupData();
+  }
+
+  /*final List<Group> groupData = [
     Group(1, "KSS", "KS Securities"),
     Group(2, "KSF", "KS Group"),
     Group(1, "KST", "KS Securities"),
@@ -38,7 +54,8 @@ class _MealBodyState extends State<MealBody> {
     Group(2, "KBC", "KS Group"),
     Group(1, "KBD", "KS Securities"),
     Group(2, "KSG", "KS Group"),
-  ];
+  ];*/
+  final List<Group> groupData = [];
   List<GroupMember> memberData = [
   ];
 
@@ -49,6 +66,58 @@ class _MealBodyState extends State<MealBody> {
 
     return Container();
   }
+  loadGroupData(){
+    Future<List<Group>> groups = GroupService.getGroup();
+    setState(() {
+      groups.then((value){
+        setState(() {
+         groupData.addAll(value);
+        });
+      });
+    });
+  }
+
+  loadMemberByGroup(Group group){
+    UserService.getUserByGroupId(group.id).then((value){
+      setState(() {
+        memberData.addAll(value);
+      });
+    });
+  }
+  showLoaderDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: new Row(
+        children: [
+          CircularProgressIndicator(),
+          Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
+    );
+  }
+
+  pushMeal(BuildContext context,CreateMealRequest requestBody) async {
+    MealService.createMeal(requestBody)
+        .then((value){
+          setState(() {
+            isBusy = false;
+          });
+          if(value.success){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Create Meal successfully")));
+          }else{
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Create Meal failed")));
+          }
+    });
+    // showLoaderDialog(context);
+
+    // showLoaderDialog(context);
+    // await Future.delayed(Duration(seconds: 5));
+
+  }
 
 
 
@@ -58,6 +127,13 @@ class _MealBodyState extends State<MealBody> {
       MealParticipant oneMember  = MealParticipant(member, 1);
       participantList.add(oneMember);
       participantControllers.putIfAbsent(oneMember, () => TextEditingController(text: "1"));
+    });
+  }
+  void removeParticipant(MealParticipant mealParticipant){
+    setState(() {
+      memberData.add(mealParticipant.member);
+      participantList.remove(mealParticipant);
+      participantControllers.remove(mealParticipant);
     });
   }
 
@@ -144,16 +220,18 @@ class _MealBodyState extends State<MealBody> {
               .toList(),
           value: selectedGroup,
           onChanged: (value) {
-            print(value);
-            setState(() {
-              selectedGroup = value as Group;
-              memberData.add(
-                GroupMember(1, 1, "Kien Pham", DateTime(1998), 127000),
-              );
-              memberData.add(
-                GroupMember(2, 2, "Kien Pham 2", DateTime(1998), 127000),
-              );
-            });
+            Group newGroup = value as Group;
+            // print(value);
+            if(newGroup != selectedGroup){
+              setState(() {
+                selectedGroup = newGroup;
+                participantList.removeWhere((element) => true);
+                memberData.removeWhere((element) => true);
+                loadMemberByGroup(selectedGroup!);
+
+              });
+            }
+
           },
           // buttonHeight: 40,
           // buttonWidth: 200,
@@ -285,28 +363,29 @@ class _MealBodyState extends State<MealBody> {
     if(participantList.isEmpty) return const Text("");
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
         child: GridView.builder(
-          gridDelegate:
-            const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-              mainAxisSpacing: 20,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200,
+                // mainAxisSpacing: 20,
                 crossAxisSpacing: 20,
-              childAspectRatio: 3/2
-            ),
-          shrinkWrap: true,
+                childAspectRatio: 3 / 2),
+            shrinkWrap: true,
             physics: ClampingScrollPhysics(),
             itemCount: participantList.length,
-            itemBuilder: (context,index){
+            itemBuilder: (context, index) {
               MealParticipant participant = participantList[index];
-              TextEditingController _controller = participantControllers[participant]?? TextEditingController(text: "-1");
+              TextEditingController _controller =
+                  participantControllers[participant]?? TextEditingController(text: "-1");
+              // if(_controller == null) return Container();
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Container(
-                  child: TextFormField(
+                child: Stack(children: [
+                  TextFormField(
+                    keyboardType: TextInputType.number,
                     controller: _controller,
-                    validator: (value){
-                      if(value == null || value.isEmpty ){
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
                         return "Please an unit.";
                       }
                       return null;
@@ -322,15 +401,25 @@ class _MealBodyState extends State<MealBody> {
                       fillColor: Colors.white,
                       filled: true,
                     ),
-
-
-                    onSaved: (value){
-                    },
+                    onSaved: (value) {},
                     autofocus: true,
                   ),
-                ),
+                  Positioned(
+                      top: 0,
+                      right: 0,
+                      child: TextButton(
+                        onPressed: () {
+                          removeParticipant(participant);
+                        },
+                        child: Icon(Icons.remove_circle, size: 18),
+                        style: TextButton.styleFrom(
+                          minimumSize: Size.zero, // Set this
+                          padding: EdgeInsets.zero, // and this
+                        ),
+                        // label: Text("TEXT BUTTON"),
+                      ))
+                ]),
               );
-
             }),
       ),
     );
@@ -398,12 +487,32 @@ class _MealBodyState extends State<MealBody> {
       ),
     );
   }
-  Widget createSubmitButton(){
+  Widget createSubmitButton(BuildContext context){
     return ElevatedButton(
         onPressed: (){
           if(formKey.currentState?.validate() !=null
               && formKey.currentState?.validate()==true){
             print("line 261, okay save info");
+            String foodName = foodNameController.value.text;
+            String billTotal = billTotalController.value.text;
+            DateTime foodDate = selectedDate;
+            int? groupId = selectedGroup?.id;
+
+            String userList = participantList.map((mem) {
+              String? amount = participantControllers[mem]?.value.text;
+              if(amount != null){
+                return "${mem.member.memberId}-${amount}";
+              }
+              return "${mem.member.memberId}-${mem.amount}";
+            }).join(":");
+
+            print("foodName: $foodName, billTotal: $billTotal, foodDate: $foodDate, userList: $userList");
+            CreateMealRequest request = CreateMealRequest(foodName, billTotal, foodDate, groupId??-1, userList);
+            pushMeal(context,request);
+            setState(() {
+              isBusy = !isBusy;
+            });
+
           }
         },
         child: Text("Create Meal"));
@@ -442,13 +551,29 @@ class _MealBodyState extends State<MealBody> {
       ),
     );
   }
+  Widget createFormWidget(List<Widget> widgets){
+    return SingleChildScrollView(
+        reverse: true,
+        child: Padding(
+        padding: const EdgeInsets.all(8.0),
+    child: Form(
+    key: formKey,
+    child: Column(
+
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: widgets,
+
+    ),
+    ),
+    ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> formWidgets = [];
-    // formWidgets.add(Text("Food Name"));
     formWidgets.add(createFoodNameWidget());
-    // formWidgets.add(Text("Bill Total"));
     formWidgets.add(createBillTotalWidget());
     formWidgets.add(createSelectDate(context));
     formWidgets.add(Text("Group"));
@@ -456,26 +581,43 @@ class _MealBodyState extends State<MealBody> {
     formWidgets.add(Text("Members: "));
     formWidgets.add(selectMember(context));
     formWidgets.add(editableMember(context,participantControllers));
-    formWidgets.add(createSubmitButton());
+    formWidgets.add(createSubmitButton(context));
+
+    List<Widget> children = isBusy? [createFormWidget(formWidgets),Loading(),]: [createFormWidget(formWidgets)];
 
 
+    return Stack(
+      alignment: Alignment.center,
+      children: children,
+    );
 
 
     return Container(
-        child: SingleChildScrollView(
-          reverse: true,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-              key: formKey,
-              child: Column(
+      child: SingleChildScrollView(
+        reverse: true,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: formKey,
+            child: Column(
 
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: formWidgets,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: formWidgets,
+
+        ),
       ),
-    ),
-          ),
-        ));
+        ),
+      ),
+    );
   }
+}
+
+class PleaseWaitWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Center(
+          child: Image.asset("assets/cupertino_activity_indicator_small.gif"),),
+        color: Colors.grey.withOpacity(0.3)); }
 }
