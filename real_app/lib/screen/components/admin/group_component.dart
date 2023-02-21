@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:real_app/constant/path_constant.dart';
 import 'package:real_app/model/group.dart';
+import 'package:real_app/screen/components/admin/add_group_component.dart';
+import 'package:rive/rive.dart';
 
 class GroupBody extends StatefulWidget {
 
@@ -25,6 +27,12 @@ class _GroupBodyState extends State<GroupBody> {
 
   openGroupDetail(BuildContext context,int groupId){
     Navigator.of(context).pushNamed(PathConstant.GROUP_DETAILS,arguments: groupId);
+  }
+
+  void showAddGroupDialog() async{
+    await showDialog(context: context, builder: (context){
+      return Dialog(child: AddGroupDialog(),);
+    });
   }
 
   List<ExpansionPanel> buildListItem(BuildContext context) {
@@ -67,12 +75,23 @@ class _GroupBodyState extends State<GroupBody> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: SingleChildScrollView(
-        child: Container(
+      reverse: true,
+      child: Stack(
+        children:
+        [
+          Container(
           margin: const EdgeInsets.all(24),
           child: Column(
             children: [
-              ElevatedButton(onPressed: () {}, child: const Text("Add Group")),
+              // ElevatedButton(onPressed: () {}, child: const Text("Add Group")),
+              Container(
+                  width: 200,
+                  height: 200,
+                  child: RiveAnimation.asset('assets/group.riv',
+                    animations: ['curves'],
+                    controllers: [SimpleAnimation('idle')],
+                    fit: BoxFit.cover,
+                  )),
               ExpansionPanelList(
                 children: buildListItem(context),
                 expansionCallback: (index,isExpanded){
@@ -81,9 +100,25 @@ class _GroupBodyState extends State<GroupBody> {
                   });
                 },
               ),
+
             ],
           ),
         ),
+          Positioned(
+              bottom: 20,
+              right: 0,
+              child: ElevatedButton(
+                onPressed: (){
+                    showAddGroupDialog();
+                },
+                child: Icon(Icons.group_add_outlined),
+                style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(),
+                  padding: EdgeInsets.all(15),
+                ),
+              ),
+          ),
+        ]
       ),
     );
   }

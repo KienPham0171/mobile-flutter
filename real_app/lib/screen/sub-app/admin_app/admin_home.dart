@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_like_css/gradient_like_css.dart';
 import 'package:real_app/config/navigator_config.dart';
 import 'package:real_app/screen/components/admin/admin_navigator.dart';
 
@@ -41,12 +42,16 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Rice-Service"),
+        title: const Text("Rice-Service",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
         elevation: 0.0,
+        backgroundColor: Colors.white,
       ),
       body:  Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
-            gradient: LinearGradient(
+            gradient: linearGradient(150, [ '#1f005c', '#6c0060', '#a40059', '#cf2b4c', '#ea623b', '#f7972e', '#f4cb36', '#e2ff61'])
+            /*LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               stops: [
@@ -64,19 +69,17 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 // Colors.indigo,
                 // Colors.teal,
               ],
-            )
+            )*/
         ),
         child: SingleChildScrollView(
           reverse: true,
-          child: Center(
-            child: Column(
-              children: [
-                createBodyWidget(context, adminController),
-                ElevatedButton(onPressed: (){
-                  store.dispatch(UserLogoutAction());
-                }, child: const Text("Logout"),)
-              ],
-            ),
+          child: Column(
+            children: [
+              createBodyWidget(context, adminController),
+              // ElevatedButton(onPressed: (){
+              //   store.dispatch(UserLogoutAction());
+              // }, child: const Text("Logout"),)
+            ],
           ),
         ),
       ),

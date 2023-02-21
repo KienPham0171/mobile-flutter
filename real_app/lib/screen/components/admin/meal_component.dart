@@ -9,6 +9,7 @@ import 'package:real_app/client/dio_client_config.dart';
 import 'package:real_app/dto/request/create_meal_request.dart';
 import 'package:real_app/model/base_response.dart';
 import 'package:real_app/model/meal_participant.dart';
+import 'package:real_app/screen/components/common/Input.dart';
 import 'package:real_app/screen/components/common/date_picker_component.dart';
 import 'package:real_app/screen/components/common/loading_component.dart';
 import 'package:real_app/service/group_service.dart';
@@ -194,85 +195,99 @@ class _MealBodyState extends State<MealBody> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8.0),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton2(
-          buttonDecoration: BoxDecoration(
-              border: Border.all(color: Colors.blueAccent),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          isExpanded: true,
-          hint: Text(
-            'Select a group...',
-            style: TextStyle(
-              fontSize: 14,
-              color: Theme.of(context).hintColor,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius:const BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              // spreadRadius: 5,
+              blurRadius: 4,
+              offset: Offset(4,8), // changes position of shadow
             ),
-          ),
-          items: groupData
-              .map((group) => DropdownMenuItem<Group>(
-            value: group,
-            child: Text(
-              group.groupName,
-              style: const TextStyle(
+          ],
+        ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton2(
+            buttonDecoration: BoxDecoration(
+                // border: Border.all(color: Colors.blueAccent),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            isExpanded: true,
+            hint: Text(
+              'Select a group...',
+              style: TextStyle(
                 fontSize: 14,
+                color: Theme.of(context).hintColor,
               ),
             ),
-          ))
-              .toList(),
-          value: selectedGroup,
-          onChanged: (value) {
-            Group newGroup = value as Group;
-            // print(value);
-            if(newGroup != selectedGroup){
-              setState(() {
-                selectedGroup = newGroup;
-                participantList.removeWhere((element) => true);
-                memberData.removeWhere((element) => true);
-                loadMemberByGroup(selectedGroup!);
-
-              });
-            }
-
-          },
-          // buttonHeight: 40,
-          // buttonWidth: 200,
-          itemHeight: 40,
-          dropdownMaxHeight: 200,
-          searchController: textEditingController,
-          searchInnerWidget: Padding(
-            padding: const EdgeInsets.only(
-              top: 8,
-              bottom: 4,
-              right: 8,
-              left: 8,
-            ),
-            child: TextFormField(
-              autofocus: true,
-              controller: textEditingController,
-              decoration: InputDecoration(
-                isDense: true,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 15,
+            items: groupData
+                .map((group) => DropdownMenuItem<Group>(
+              value: group,
+              child: Text(
+                group.groupName,
+                style: const TextStyle(
+                  fontSize: 14,
                 ),
-                hintText: 'Search for an item...',
-                hintStyle: const TextStyle(fontSize: 12),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+              ),
+            ))
+                .toList(),
+            value: selectedGroup,
+            onChanged: (value) {
+              Group newGroup = value as Group;
+              // print(value);
+              if(newGroup != selectedGroup){
+                setState(() {
+                  selectedGroup = newGroup;
+                  participantList.removeWhere((element) => true);
+                  memberData.removeWhere((element) => true);
+                  loadMemberByGroup(selectedGroup!);
+
+                });
+              }
+
+            },
+            // buttonHeight: 40,
+            // buttonWidth: 200,
+            itemHeight: 40,
+            dropdownMaxHeight: 200,
+            searchController: textEditingController,
+            searchInnerWidget: Padding(
+              padding: const EdgeInsets.only(
+                top: 8,
+                bottom: 4,
+                right: 8,
+                left: 8,
+              ),
+              child: TextFormField(
+                autofocus: true,
+                controller: textEditingController,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 15,
+                  ),
+                  hintText: 'Search for an item...',
+                  hintStyle: const TextStyle(fontSize: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
             ),
+            searchMatchFn: (item, searchValue) {
+              Group grp = item.value as Group ;
+              return grp.groupName.toLowerCase().contains(searchValue.toLowerCase());
+            },
+            //This to clear the search value when you close the menu
+            onMenuStateChange: (isOpen) {
+              if (!isOpen) {
+                textEditingController.clear();
+              }
+            },
           ),
-          searchMatchFn: (item, searchValue) {
-            Group grp = item.value as Group ;
-            return grp.groupName.toLowerCase().contains(searchValue.toLowerCase());
-          },
-          //This to clear the search value when you close the menu
-          onMenuStateChange: (isOpen) {
-            if (!isOpen) {
-              textEditingController.clear();
-            }
-          },
         ),
       ),
     );
@@ -281,81 +296,83 @@ class _MealBodyState extends State<MealBody> {
     if(memberData.isEmpty) {
       return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8.0),
-      child: Text("No group or member is available."),
+      child: Text("No group or member is available.", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
     );
     }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8.0),
       // padding: EdgeInsets.only(left: 25,right: 25,bottom: MediaQuery.of(context).viewInsets.bottom +550),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton2(
-          // dropdownPadding: EdgeInsets.only(left: 25,right: 25,bottom: MediaQuery.of(context).viewInsets.bottom +550),
-          buttonDecoration: BoxDecoration(
-            border: Border.all(color: Colors.blueAccent),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          isExpanded: true,
-          hint: Text(
-            'Select a group...',
-            style: TextStyle(
-              fontSize: 14,
-              color: Theme.of(context).hintColor,
+      child: InputWithShadow(
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton2(
+            // dropdownPadding: EdgeInsets.only(left: 25,right: 25,bottom: MediaQuery.of(context).viewInsets.bottom +550),
+            buttonDecoration: BoxDecoration(
+              // border: Border.all(color: Colors.blueAccent),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
-          ),
-          items: memberData
-              .map((member) => DropdownMenuItem<GroupMember>(
-            value: member,
-            child: Text(
-              member.memberName,
-              style: const TextStyle(
+            isExpanded: true,
+            hint: Text(
+              'Select a member...',
+              style: TextStyle(
                 fontSize: 14,
+                color: Theme.of(context).hintColor,
               ),
             ),
-          ))
-              .toList(),
-          value: null,
-          onChanged: (value) {
-            addParticipant(value as GroupMember);
-          },
-          // buttonHeight: 40,
-          // buttonWidth: 200,
-          itemHeight: 40,
-          dropdownMaxHeight: 200,
-          searchController: textEditingController,
-          searchInnerWidget: Padding(
-            padding: const EdgeInsets.only(
-              top: 8,
-              bottom: 4,
-              right: 8,
-              left: 8,
-            ),
-            child: TextFormField(
-              autofocus: true,
-              controller: textEditingController,
-              decoration: InputDecoration(
-                isDense: true,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 15,
+            items: memberData
+                .map((member) => DropdownMenuItem<GroupMember>(
+              value: member,
+              child: Text(
+                member.memberName,
+                style: const TextStyle(
+                  fontSize: 14,
                 ),
-                hintText: 'Select a participant...',
-                hintStyle: const TextStyle(fontSize: 12),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+              ),
+            ))
+                .toList(),
+            value: null,
+            onChanged: (value) {
+              addParticipant(value as GroupMember);
+            },
+            // buttonHeight: 40,
+            // buttonWidth: 200,
+            itemHeight: 40,
+            dropdownMaxHeight: 200,
+            searchController: textEditingController,
+            searchInnerWidget: Padding(
+              padding: const EdgeInsets.only(
+                top: 8,
+                bottom: 4,
+                right: 8,
+                left: 8,
+              ),
+              child: TextFormField(
+                autofocus: true,
+                controller: textEditingController,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 15,
+                  ),
+                  hintText: 'Select a participant...',
+                  hintStyle: const TextStyle(fontSize: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
             ),
+            searchMatchFn: (item, searchValue) {
+              GroupMember member = item.value as GroupMember ;
+              return member.memberName.toLowerCase().contains(searchValue.toLowerCase());
+            },
+            //This to clear the search value when you close the menu
+            onMenuStateChange: (isOpen) {
+              if (!isOpen) {
+                textEditingController.clear();
+              }
+            },
           ),
-          searchMatchFn: (item, searchValue) {
-            GroupMember member = item.value as GroupMember ;
-            return member.memberName.toLowerCase().contains(searchValue.toLowerCase());
-          },
-          //This to clear the search value when you close the menu
-          onMenuStateChange: (isOpen) {
-            if (!isOpen) {
-              textEditingController.clear();
-            }
-          },
         ),
       ),
     );
@@ -430,7 +447,7 @@ class _MealBodyState extends State<MealBody> {
     return Container(
         child: SvgPicture.asset(
             "assets/food.svg",
-            colorFilter: ColorFilter.mode(Colors.red, BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
             semanticsLabel: 'A red up arrow',
           width: 150,
           height: 150,
@@ -444,12 +461,7 @@ class _MealBodyState extends State<MealBody> {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10)
-          ),
+          borderRadius:const BorderRadius.all(Radius.circular(10)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.5),
@@ -483,7 +495,7 @@ class _MealBodyState extends State<MealBody> {
             ),
             onSaved: (value){
             },
-            autofocus: true,
+            // autofocus: true,
           ),
         ),
       ),
@@ -492,28 +504,47 @@ class _MealBodyState extends State<MealBody> {
   Widget createBillTotalWidget(){
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
-      child: TextFormField(
-        controller: billTotalController,
-        keyboardType: TextInputType.number,
-        validator: (value){
-          if(value == null || value.isEmpty){
-            return "Please enter bill total.";
-          }
-        },
-        decoration: InputDecoration(
-          focusedBorder: KienInputStyle.inputForcusBoder,
-          enabledBorder: KienInputStyle.enabledBorder,
-          errorBorder: KienInputStyle.errorBorder,
-          focusedErrorBorder: KienInputStyle.forcusErrorBorder,
-          border: KienInputStyle.inputBorder,
-          hintText: "1.000",
-          labelText: "Bill Total",
-          fillColor: Colors.white,
-          filled: true,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              // spreadRadius: 5,
+              blurRadius: 4,
+              offset: Offset(4,8), // changes position of shadow
+            ),
+          ],
         ),
-        onSaved: (value){
-        },
-        autofocus: false,
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: TextFormField(
+            controller: billTotalController,
+            keyboardType: TextInputType.number,
+            validator: (value){
+              if(value == null || value.isEmpty){
+                return "Please enter bill total.";
+              }
+            },
+            decoration: InputDecoration(
+              // focusedBorder: KienInputStyle.inputForcusBoder,
+              // enabledBorder: KienInputStyle.enabledBorder,
+              // errorBorder: KienInputStyle.errorBorder,
+              // focusedErrorBorder: KienInputStyle.forcusErrorBorder,
+              // border: KienInputStyle.inputBorder,
+              border: InputBorder.none,
+              hintText: "1.000",
+              labelText: "Bill Total",
+              fillColor: Colors.white,
+                contentPadding: EdgeInsets.all(10)
+              // filled: true,
+            ),
+            onSaved: (value){
+            },
+            // autofocus: false,
+          ),
+        ),
       ),
     );
   }
@@ -550,34 +581,52 @@ class _MealBodyState extends State<MealBody> {
   Widget createSelectDate(BuildContext context){
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
-      child: TextFormField(
-        enableInteractiveSelection: false,
-        focusNode: AlwaysDisabledFocusNode(),
-        // enabled: false,
-        onTap: (){
-          _selectDate(context);
-        },
-        controller: TextEditingController(text: DateTimeUtils.dateTimeToString(selectedDate)),
-        validator: (value){
-          if(value == null || value.isEmpty){
-            return "Please select a date.";
-          }
-        },
-        decoration: InputDecoration(
-          focusedBorder: KienInputStyle.inputForcusBoder,
-          enabledBorder: KienInputStyle.enabledBorder,
-          errorBorder: KienInputStyle.errorBorder,
-          focusedErrorBorder: KienInputStyle.forcusErrorBorder,
-          border: KienInputStyle.inputBorder,
-          hintText: DateTimeUtils.dateTimeToString(selectedDate),
-          labelText: "Food Date",
-          fillColor: Colors.white,
-          filled: true,
-          suffixIcon: Icon(CupertinoIcons.calendar),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              blurRadius: 4,
+              offset: Offset(4,8), // changes position of shadow
+            ),
+          ],
         ),
-        onSaved: (value){
-        },
-        autofocus: true,
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: TextFormField(
+            enableInteractiveSelection: false,
+            focusNode: AlwaysDisabledFocusNode(),
+            // enabled: false,
+            onTap: (){
+              _selectDate(context);
+            },
+            controller: TextEditingController(text: DateTimeUtils.dateTimeToString(selectedDate)),
+            validator: (value){
+              if(value == null || value.isEmpty){
+                return "Please select a date.";
+              }
+            },
+            decoration: InputDecoration(
+              // focusedBorder: KienInputStyle.inputForcusBoder,
+              // enabledBorder: KienInputStyle.enabledBorder,
+              // errorBorder: KienInputStyle.errorBorder,
+              // focusedErrorBorder: KienInputStyle.forcusErrorBorder,
+              // border: KienInputStyle.inputBorder,
+              border: InputBorder.none,
+              hintText: DateTimeUtils.dateTimeToString(selectedDate),
+              labelText: "Food Date",
+              fillColor: Colors.white,
+              // filled: true,
+                contentPadding: EdgeInsets.all(10),
+              suffixIcon: Icon(CupertinoIcons.calendar),
+            ),
+            onSaved: (value){
+            },
+            autofocus: true,
+          ),
+        ),
       ),
     );
   }
@@ -607,9 +656,9 @@ class _MealBodyState extends State<MealBody> {
     formWidgets.add(createFoodNameWidget());
     formWidgets.add(createBillTotalWidget());
     formWidgets.add(createSelectDate(context));
-    formWidgets.add(Text("Group"));
+    formWidgets.add(Text("Group",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),));
     formWidgets.add(selectGroup(context));
-    formWidgets.add(Text("Members: "));
+    formWidgets.add(Text("Members: ",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)));
     formWidgets.add(selectMember(context));
     formWidgets.add(editableMember(context,participantControllers));
     formWidgets.add(createSubmitButton(context));
