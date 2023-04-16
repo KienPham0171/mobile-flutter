@@ -5,7 +5,10 @@ import '../model/group.dart';
 class GroupService {
 
     static Future<List<Group>> getGroup() async {
-      List<Group> result = [];
+      List<Group> result = [
+        Group(1, "Group 1", "Description"),
+        Group(2, "Group 2", "Description"),
+      ];
       try{
         await DioClient.dio.get("/e/groups")
           /*  .then((value) async {

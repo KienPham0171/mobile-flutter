@@ -32,6 +32,7 @@ class MealBody extends StatefulWidget {
 class _MealBodyState extends State<MealBody> {
 
   bool isBusy = false;
+  bool isOrder = true;
 
   final formKey = GlobalKey<FormState>();
   TextEditingController foodNameController = TextEditingController(text: "");
@@ -649,6 +650,25 @@ class _MealBodyState extends State<MealBody> {
     );
   }
 
+  Widget createOption(BuildContext context){
+    return SingleChildScrollView(
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          ElevatedButton(onPressed: (){
+            print("Create Order");
+          }, child: Text("Create Order",)),
+          ElevatedButton(onPressed: (){
+            setState(() {
+              isOrder = false;
+            });
+            print("Add Bill");
+          }, child: Text("Add Bill",))
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> formWidgets = [];
@@ -656,12 +676,17 @@ class _MealBodyState extends State<MealBody> {
     formWidgets.add(createFoodNameWidget());
     formWidgets.add(createBillTotalWidget());
     formWidgets.add(createSelectDate(context));
-    formWidgets.add(Text("Group",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),));
-    formWidgets.add(selectGroup(context));
-    formWidgets.add(Text("Members: ",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)));
-    formWidgets.add(selectMember(context));
-    formWidgets.add(editableMember(context,participantControllers));
-    formWidgets.add(createSubmitButton(context));
+    if(isOrder){
+      formWidgets.add(createOption(context));
+    }else{
+      formWidgets.add(Text("Group",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),));
+      formWidgets.add(selectGroup(context));
+      formWidgets.add(Text("Members: ",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)));
+      formWidgets.add(selectMember(context));
+      formWidgets.add(editableMember(context,participantControllers));
+      formWidgets.add(createSubmitButton(context));
+    }
+
 
     List<Widget> children = isBusy? [createFormWidget(formWidgets),Loading(),]: [createFormWidget(formWidgets)];
 

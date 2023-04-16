@@ -9,11 +9,12 @@ class AddGroupDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // decoration: BoxDecoration(
-      //     gradient: linearGradient(150, [ '#1f005c', '#6c0060', '#a40059', '#cf2b4c', '#ea623b', '#f7972e', '#f4cb36', '#e2ff61'])
-      // ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius:const BorderRadius.all(Radius.circular(20)),
+      ),
       // width: 200,
-      height: 350,
+      height: 400,
       // padding: const EdgeInsets.all(8.0),
       child: Padding(
         padding: const EdgeInsets.all(20.0),

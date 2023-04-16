@@ -21,7 +21,7 @@ const bg1 = LinearGradient(
 // hsl(55deg 100% 50%) 100%
 // );
 
- els = Container(
+ final els = Container(
 height: 300,
 width: 300,
 decoration: BoxDecoration(

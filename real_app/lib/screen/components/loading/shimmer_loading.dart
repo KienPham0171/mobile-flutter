@@ -10,7 +10,9 @@ class ShimmerLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Loading..."),
+        title: const Text("Loading...",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+        elevation: 0.0,
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),

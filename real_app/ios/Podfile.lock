@@ -1,0 +1,35 @@
+PODS:
+  - Flutter (1.0.0)
+  - gradient_like_css (0.0.1):
+    - Flutter
+  - rive_common (0.0.1):
+    - Flutter
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - gradient_like_css (from `.symlinks/plugins/gradient_like_css/ios`)
+  - rive_common (from `.symlinks/plugins/rive_common/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  gradient_like_css:
+    :path: ".symlinks/plugins/gradient_like_css/ios"
+  rive_common:
+    :path: ".symlinks/plugins/rive_common/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  gradient_like_css: 5bf90b38d326b3883145898d762735ca07d17991
+  rive_common: e35144d3b86972f8760b6c9f8b120dfd5fadfa13
+  shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
+
+PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
+
+COCOAPODS: 1.11.3

@@ -51,21 +51,19 @@ Widget genRealApp(BuildContext context, UserInfo user){
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: StoreConnector<AppState,UserInfo>(
-          converter: (store) => store.state.userInfo,
-          builder: (context,userInfo){
-            return Scaffold(
-              // appBar: AppBar(
-              //   title:Text(""),
-              // ),
-              body: userInfo.isLogin == false? createLoginScreen(context,userInfo):genRealApp(context, userInfo)
-            );
-          },
-        ),
-        resizeToAvoidBottomInset: true,
+    return Scaffold(
+      body: StoreConnector<AppState,UserInfo>(
+        converter: (store) => store.state.userInfo,
+        builder: (context,userInfo){
+          return Scaffold(
+            // appBar: AppBar(
+            //   title:Text(""),
+            // ),
+            body: userInfo.isLogin == false? createLoginScreen(context,userInfo):genRealApp(context, userInfo)
+          );
+        },
       ),
+      resizeToAvoidBottomInset: true,
     );
   }
 }

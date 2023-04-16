@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../redux/action.dart';
 import '../../../redux/state.dart';
 
-class HomeBody extends StatelessWidget {
-  const HomeBody({Key? key}) : super(key: key);
+class UserHomeBody extends StatelessWidget {
+  const UserHomeBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class HomeBody extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("Home Body"),
+            Text("User Home Body"),
             ElevatedButton(onPressed: (){
               store.dispatch(UserLogoutAction());
             }, child: const Text("Logout"),)

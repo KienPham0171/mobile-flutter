@@ -15,14 +15,14 @@ class GroupBody extends StatefulWidget {
 
 class _GroupBodyState extends State<GroupBody> {
   final List<Group> groupData = [
-    Group(1, "KSS", "KS Securities"),
-    Group(2, "KSG", "KS Group"),
-    Group(1, "KSS", "KS Securities"),
-    Group(2, "KSG", "KS Group"),
-    Group(1, "KSS", "KS Securities"),
-    Group(2, "KSG", "KS Group"),
-    Group(1, "KSS", "KS Securities"),
-    Group(2, "KSG", "KS Group"),
+    Group(1, "AKS", "AKS Company"),
+    Group(2, "ASG", "ASG Corporation"),
+    Group(1, "SSS", "SSs Group"),
+    Group(2, "KIG", "AKS Company"),
+    Group(1, "KUS", "AKS Company"),
+    Group(2, "KMG", "SSs Group"),
+    Group(1, "GSC", "AKS Company"),
+    Group(2, "SDG", "AKS Company"),
   ];
 
   openGroupDetail(BuildContext context,int groupId){
