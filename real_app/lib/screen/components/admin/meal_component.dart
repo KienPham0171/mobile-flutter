@@ -668,6 +668,77 @@ class _MealBodyState extends State<MealBody> {
       ),
     );
   }
+  Widget optionParent(BuildContext context){
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Card(
+            color: Colors.red,
+            semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: InkWell(
+              onTap: (){
+                print("tap here");
+              },
+              child: Image.asset(
+                'assets/order.jpeg',
+                fit: BoxFit.fill,
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            elevation: 5,
+            margin: EdgeInsets.all(10),
+          ),
+          Card(
+            semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: InkWell(
+              onTap: (){
+                print("tap here");
+              },
+              child: Image.asset(
+                'assets/invoice.png',
+                fit: BoxFit.fill,
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            elevation: 5,
+            margin: EdgeInsets.all(10),
+          ),
+
+          Card(
+            semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: InkWell(
+              onTap: (){
+                print("tap here");
+              },
+              child: Image.asset(
+                'assets/option3.jpeg',
+                fit: BoxFit.fill,
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            elevation: 5,
+            margin: EdgeInsets.all(10),
+          ),
+          // ElevatedButton(onPressed: (){
+          //   print("Create Order");
+          // }, child: Text("Create Order",)),
+          // ElevatedButton(onPressed: (){
+          //   print("Add Bill");
+          // }, child: Text("Bill Management",))
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -690,6 +761,9 @@ class _MealBodyState extends State<MealBody> {
 
     List<Widget> children = isBusy? [createFormWidget(formWidgets),Loading(),]: [createFormWidget(formWidgets)];
 
+    return Container(
+      child: optionParent(context),
+    );
 
     return Stack(
       alignment: Alignment.center,

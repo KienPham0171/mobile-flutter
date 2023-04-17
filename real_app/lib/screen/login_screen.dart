@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:real_app/model/user_info.dart';
 
+import '../auth/loginScreen.dart';
 import '../redux/action.dart';
 import '../redux/state.dart';
 
@@ -10,8 +11,10 @@ class LoginScreen extends StatelessWidget {
 
   const LoginScreen({Key? key, required this.user}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
+    return loginScreen();
     return Scaffold(
       body: Center(
         child: Column(

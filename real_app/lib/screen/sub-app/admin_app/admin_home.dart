@@ -49,9 +49,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
       body:  Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
+        /*decoration: BoxDecoration(
             gradient: linearGradient(150, [ '#1f005c', '#6c0060', '#a40059', '#cf2b4c', '#ea623b', '#f7972e', '#f4cb36', '#e2ff61'])
-            /*LinearGradient(
+            *//*LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               stops: [
@@ -69,11 +69,20 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 // Colors.indigo,
                 // Colors.teal,
               ],
-            )*/
-        ),
+            )*//*
+        ),*/
+        decoration: const BoxDecoration(
+          // color: Colors.red.withOpacity(0.1),
+            image: DecorationImage(
+                image: NetworkImage(
+                  // 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShp2T_UoR8vXNZXfMhtxXPFvmDWmkUbVv3A40TYjcunag0pHFS_NMblOClDVvKLox4Atw&usqp=CAU',
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx7IBkCtYd6ulSfLfDL-aSF3rv6UfmWYxbSE823q36sPiQNVFFLatTFdGeUSnmJ4tUzlo&usqp=CAU'),
+                fit: BoxFit.cover,
+                opacity: 0.3)),
         child: SingleChildScrollView(
           reverse: true,
           child: Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               createBodyWidget(context, adminController),
               // ElevatedButton(onPressed: (){
