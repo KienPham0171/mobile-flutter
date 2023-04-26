@@ -1,36 +1,36 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:real_app/client/dio_client_config.dart';
-import 'package:real_app/dto/request/create_meal_request.dart';
-import 'package:real_app/model/base_response.dart';
-import 'package:real_app/model/meal_participant.dart';
-import 'package:real_app/screen/components/common/Input.dart';
-import 'package:real_app/screen/components/common/date_picker_component.dart';
-import 'package:real_app/screen/components/common/loading_component.dart';
-import 'package:real_app/service/group_service.dart';
-import 'package:real_app/service/meal_service.dart';
-import 'package:real_app/service/user_service.dart';
-import 'package:real_app/style/text_field_style.dart';
-import 'package:real_app/util/date_time_util.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gradient_like_css/gradient_like_css.dart';
 
 import '../../../constant/path_constant.dart';
+import '../../../dto/request/create_meal_request.dart';
 import '../../../model/group.dart';
 import '../../../model/group_member.dart';
+import '../../../model/meal_participant.dart';
+import '../../../service/group_service.dart';
+import '../../../service/meal_service.dart';
+import '../../../service/user_service.dart';
+import '../../../style/text_field_style.dart';
+import '../../../util/date_time_util.dart';
+import '../../components/common/Input.dart';
+import '../../components/common/date_picker_component.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class MealBody extends StatefulWidget {
-  const MealBody({Key? key}) : super(key: key);
+import '../../components/common/loading_component.dart';
+
+class OrderDetailScreen extends StatefulWidget {
+  const OrderDetailScreen({Key? key}) : super(key: key);
 
   @override
-  State<MealBody> createState() => _MealBodyState();
+  _OrderDetailScreenState createState() => _OrderDetailScreenState();
 }
 
-class _MealBodyState extends State<MealBody> {
+class _OrderDetailScreenState extends State<OrderDetailScreen> {
+
+
 
   bool isBusy = false;
   bool isOrder = true;
@@ -48,7 +48,6 @@ class _MealBodyState extends State<MealBody> {
   void initState() {
     loadGroupData();
   }
-
 
   /*final List<Group> groupData = [
     Group(1, "KSS", "KS Securities"),
@@ -76,7 +75,7 @@ class _MealBodyState extends State<MealBody> {
     setState(() {
       groups.then((value){
         setState(() {
-         groupData.addAll(value);
+          groupData.addAll(value);
         });
       });
     });
@@ -108,14 +107,14 @@ class _MealBodyState extends State<MealBody> {
   pushMeal(BuildContext context,CreateMealRequest requestBody) async {
     MealService.createMeal(requestBody)
         .then((value){
-          setState(() {
-            isBusy = false;
-          });
-          if(value.success){
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Create Meal successfully")));
-          }else{
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Create Meal failed")));
-          }
+      setState(() {
+        isBusy = false;
+      });
+      if(value.success){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Create Meal successfully")));
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Create Meal failed")));
+      }
     });
     // showLoaderDialog(context);
 
@@ -214,8 +213,8 @@ class _MealBodyState extends State<MealBody> {
         child: DropdownButtonHideUnderline(
           child: DropdownButton2(
             buttonDecoration: BoxDecoration(
-                // border: Border.all(color: Colors.blueAccent),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+              // border: Border.all(color: Colors.blueAccent),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             isExpanded: true,
             hint: Text(
@@ -298,9 +297,9 @@ class _MealBodyState extends State<MealBody> {
   Widget selectMember(BuildContext context){
     if(memberData.isEmpty) {
       return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8.0),
-      child: Text("No group or member is available.", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
-    );
+        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8.0),
+        child: Text("No group or member is available.", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+      );
     }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8.0),
@@ -449,9 +448,9 @@ class _MealBodyState extends State<MealBody> {
   Widget createFoodImage(){
     return Container(
         child: SvgPicture.asset(
-            "assets/food.svg",
-            colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
-            semanticsLabel: 'A red up arrow',
+          "assets/food.svg",
+          colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+          semanticsLabel: 'A red up arrow',
           width: 150,
           height: 150,
         )
@@ -489,11 +488,11 @@ class _MealBodyState extends State<MealBody> {
               // errorBorder: KienInputStyle.errorBorder,
               // focusedErrorBorder: KienInputStyle.forcusErrorBorder,
               // border: KienInputStyle.inputBorder,
-              border: InputBorder.none,
-              hintText: "Thit cho",
-              labelText: "Food Name",
-              fillColor: Colors.white,
-              contentPadding: EdgeInsets.all(10)
+                border: InputBorder.none,
+                hintText: "Thit cho",
+                labelText: "Food Name",
+                fillColor: Colors.white,
+                contentPadding: EdgeInsets.all(10)
               // filled: true,
             ),
             onSaved: (value){
@@ -536,10 +535,10 @@ class _MealBodyState extends State<MealBody> {
               // errorBorder: KienInputStyle.errorBorder,
               // focusedErrorBorder: KienInputStyle.forcusErrorBorder,
               // border: KienInputStyle.inputBorder,
-              border: InputBorder.none,
-              hintText: "1.000",
-              labelText: "Bill Total",
-              fillColor: Colors.white,
+                border: InputBorder.none,
+                hintText: "1.000",
+                labelText: "Bill Total",
+                fillColor: Colors.white,
                 contentPadding: EdgeInsets.all(10)
               // filled: true,
             ),
@@ -622,7 +621,7 @@ class _MealBodyState extends State<MealBody> {
               labelText: "Food Date",
               fillColor: Colors.white,
               // filled: true,
-                contentPadding: EdgeInsets.all(10),
+              contentPadding: EdgeInsets.all(10),
               suffixIcon: Icon(CupertinoIcons.calendar),
             ),
             onSaved: (value){
@@ -635,110 +634,48 @@ class _MealBodyState extends State<MealBody> {
   }
   Widget createFormWidget(List<Widget> widgets){
     return SingleChildScrollView(
-        reverse: true,
-        child: Padding(
+      reverse: true,
+      child: Padding(
         padding: const EdgeInsets.all(8.0),
-    child: Form(
-    key: formKey,
-    child: Column(
-
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: widgets,
-
-    ),
-    ),
-    ),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: widgets,
+          ),
+        ),
+      ),
     );
   }
 
   Widget createOption(BuildContext context){
-    return SingleChildScrollView(
-      child: ListView(
-        scrollDirection: Axis.horizontal,
+    return Center(
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.center ,//Center Row contents horizontally,
+          crossAxisAlignment: CrossAxisAlignment.center,
+      // scrollDirection: Axis.horizontal,
         children: [
-          ElevatedButton(onPressed: (){
-            print("Create Order");
-          }, child: Text("Create Order",)),
-          ElevatedButton(onPressed: (){
-            setState(() {
-              isOrder = false;
-            });
-            print("Add Bill");
-          }, child: Text("Add Bill",))
-        ],
-      ),
-    );
-  }
-  Widget optionParent(BuildContext context){
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Card(
-            color: Colors.red,
-            semanticContainer: true,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: InkWell(
-              onTap: (){
-                print("tap here");
-                Navigator.of(context).pushNamed(PathConstant.ORDER_DETAILS,arguments: "something");
-              },
-              child: Image.asset(
-                'assets/order.jpeg',
-                fit: BoxFit.fill,
-              ),
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            elevation: 5,
-            margin: EdgeInsets.all(10),
-          ),
-          Card(
-            semanticContainer: true,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: InkWell(
-              onTap: (){
-                print("tap here");
-                Navigator.of(context).pushNamed(PathConstant.BILL_MANAGEMENT,arguments: "something");
-              },
-              child: Image.asset(
-                'assets/invoice.png',
-                fit: BoxFit.fill,
-              ),
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            elevation: 5,
-            margin: EdgeInsets.all(10),
+
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: ElevatedButton(onPressed: (){
+              print("Create Order");
+            }, child: Text("Create Order",)),
           ),
 
-          Card(
-            semanticContainer: true,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: InkWell(
-              onTap: (){
-                print("tap here");
-              },
-              child: Image.asset(
-                'assets/option3.jpeg',
-                fit: BoxFit.fill,
-              ),
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            elevation: 5,
-            margin: EdgeInsets.all(10),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: ElevatedButton(onPressed: (){
+              setState(() {
+                isOrder = false;
+              });
+              print("Add Bill");
+            }, child: Text("Add Bill",)),
           ),
-          // ElevatedButton(onPressed: (){
-          //   print("Create Order");
-          // }, child: Text("Create Order",)),
-          // ElevatedButton(onPressed: (){
-          //   print("Add Bill");
-          // }, child: Text("Bill Management",))
+
+
+
         ],
       ),
     );
@@ -749,13 +686,14 @@ class _MealBodyState extends State<MealBody> {
     List<Widget> formWidgets = [];
     formWidgets.add(createFoodImage());
     formWidgets.add(createFoodNameWidget());
-    formWidgets.add(createBillTotalWidget());
+
     formWidgets.add(createSelectDate(context));
+    formWidgets.add(Text("Group",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),));
+    formWidgets.add(selectGroup(context));
     if(isOrder){
       formWidgets.add(createOption(context));
     }else{
-      formWidgets.add(Text("Group",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),));
-      formWidgets.add(selectGroup(context));
+      formWidgets.add(createBillTotalWidget());
       formWidgets.add(Text("Members: ",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)));
       formWidgets.add(selectMember(context));
       formWidgets.add(editableMember(context,participantControllers));
@@ -765,8 +703,41 @@ class _MealBodyState extends State<MealBody> {
 
     List<Widget> children = isBusy? [createFormWidget(formWidgets),Loading(),]: [createFormWidget(formWidgets)];
 
-    return Container(
-      child: optionParent(context),
+    // return Container(
+    //   child: optionParent(context),
+    // );
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Create an ORDER",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+      ),
+      // body: Text("Group details with id: ${groupId}"),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          // color: Colors.red.withOpacity(0.1),
+            image: DecorationImage(
+                image: NetworkImage(
+                  // 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShp2T_UoR8vXNZXfMhtxXPFvmDWmkUbVv3A40TYjcunag0pHFS_NMblOClDVvKLox4Atw&usqp=CAU',
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx7IBkCtYd6ulSfLfDL-aSF3rv6UfmWYxbSE823q36sPiQNVFFLatTFdGeUSnmJ4tUzlo&usqp=CAU'),
+                fit: BoxFit.cover,
+                opacity: 0.3)),
+        child: Center(
+          child: Stack(
+            alignment: Alignment.center,
+            children: children,
+          )
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+
+        },
+        child: const Icon(Icons.person_add_outlined),
+      ),
     );
 
     return Stack(
@@ -788,13 +759,64 @@ class _MealBodyState extends State<MealBody> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: formWidgets,
 
-        ),
-      ),
+            ),
+          ),
         ),
       ),
     );
   }
+
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: const Text("Group Details",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+  //       elevation: 0.0,
+  //       backgroundColor: Colors.white,
+  //       foregroundColor: Colors.black,
+  //     ),
+  //     // body: Text("Group details with id: ${groupId}"),
+  //     body: Container(
+  //       width: MediaQuery.of(context).size.width,
+  //       height: MediaQuery.of(context).size.height,
+  //       decoration: BoxDecoration(
+  //           gradient: linearGradient(150, [ '#1f005c', '#6c0060', '#a40059', '#cf2b4c', '#ea623b', '#f7972e', '#f4cb36', '#e2ff61'])
+  //         /*LinearGradient(
+  //             begin: Alignment.topRight,
+  //             end: Alignment.bottomLeft,
+  //             stops: [
+  //               0.1,
+  //               0.4,
+  //               0.6,
+  //               0.9,
+  //             ],
+  //             colors: [
+  //               Color.fromRGBO(131,58,180,1),
+  //               Color.fromRGBO(123,29,253,0.7),
+  //               Color.fromRGBO(123,29,253,0.5337710084033614),
+  //               Color.fromRGBO(131,58,180,0.3),
+  //               // Colors.red,
+  //               // Colors.indigo,
+  //               // Colors.teal,
+  //             ],
+  //           )*/
+  //       ),
+  //       child: Center(
+  //         child: Container(),
+  //       ),
+  //     ),
+  //     floatingActionButton: FloatingActionButton(
+  //       onPressed: () {
+  //
+  //       },
+  //       child: const Icon(Icons.person_add_outlined),
+  //     ),
+  //   );
+  // }
 }
+
+
 
 class PleaseWaitWidget extends StatelessWidget {
   @override
@@ -804,3 +826,4 @@ class PleaseWaitWidget extends StatelessWidget {
           child: Image.asset("assets/cupertino_activity_indicator_small.gif"),),
         color: Colors.grey.withOpacity(0.3)); }
 }
+

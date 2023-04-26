@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:real_app/screen/components/admin/group_component.dart';
 import 'package:real_app/screen/components/admin/home_component.dart';
 import 'package:real_app/screen/components/admin/meal_component.dart';
-import 'package:real_app/screen/components/admin/money_component.dart';
+import 'package:real_app/screen/components/user/profile_component.dart';
 import 'package:real_app/screen/components/user/user_group_component.dart';
 import 'package:real_app/screen/components/user/user_home_component.dart';
 import 'package:real_app/screen/components/user/user_meal_component.dart';
@@ -17,7 +17,7 @@ class Configuration{
     NavigatorInfo(iconData: Icons.groups,label: "Groups",route: "/user-groups",tooltip: "Groups",bodyComponent: UserGroupBody()),
     NavigatorInfo(iconData: Icons.fastfood_outlined,label: "Food",route: "/user-food",tooltip: "Food",bodyComponent:UserMealBody()),
     NavigatorInfo(iconData: CupertinoIcons.bell,label: "Notifications",route: "/user-notifications",tooltip: "Notifications",bodyComponent: UserNotificationBody()),
-    NavigatorInfo(iconData: Icons.money_rounded,label: "Money",route: "/user-money-history",tooltip: "Money History"),
+    NavigatorInfo(iconData: Icons.perm_identity_sharp,label: "Money",route: "/user-money-history",tooltip: "Money History",bodyComponent: ProfilePage1()),
   ];
 
   static List<NavigatorInfo> ADMIN_NAVIGATOR_lIST = [

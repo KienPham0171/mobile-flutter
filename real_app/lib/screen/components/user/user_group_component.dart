@@ -1,13 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../dialog/add_money_dialog.dart';
 import '../../../util/number_util.dart';
 
 class UserGroupBody extends StatelessWidget {
   
   const UserGroupBody ({Key? key}) : super(key: key);
 
+  void showAddMoneyDialog(BuildContext context) async{
+    await showDialog(context: context, builder: (context){
+      return Dialog(child: AddMoneyDialog(),);
+    });
+  }
   List<ListTile> createListViewItem(BuildContext context){
+
     List<ListTile> result = [];
     result.add(ListTile(
       title: Text("Group 1"),
@@ -28,6 +35,9 @@ class UserGroupBody extends StatelessWidget {
             child: Card(
               color:Colors.white,
               child: ListTile(
+                onTap: (){
+                  showAddMoneyDialog(context);
+                },
                 title:  Row(
                   children: [
                     const Icon(
@@ -80,6 +90,9 @@ class UserGroupBody extends StatelessWidget {
             child: Card(
               color:Colors.white,
               child: ListTile(
+                onTap: (){
+                  showAddMoneyDialog(context);
+                },
                 title:  Row(
                   children: [
                     const Icon(
@@ -132,6 +145,9 @@ class UserGroupBody extends StatelessWidget {
             child: Card(
               color:Colors.white,
               child: ListTile(
+                onTap: (){
+                  showAddMoneyDialog(context);
+                },
                 title:  Row(
                   children: [
                     const Icon(

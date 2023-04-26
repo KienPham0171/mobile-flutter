@@ -5,8 +5,11 @@ import 'package:real_app/redux/action.dart';
 import 'package:real_app/redux/state.dart';
 import 'package:real_app/screen/home_screen.dart';
 import 'package:real_app/screen/login_screen.dart';
+import 'package:real_app/screen/sub-app/admin_app/bill_confirm_screen.dart';
+import 'package:real_app/screen/sub-app/admin_app/bill_management_screen.dart';
 import 'package:real_app/screen/sub-app/admin_app/group_details_screen.dart';
 import 'package:real_app/screen/sub-app/admin_app/meal_screen.dart';
+import 'package:real_app/screen/sub-app/admin_app/order_detail_screen.dart';
 
 import 'model/user_info.dart';
 
@@ -28,6 +31,9 @@ class MyApp extends StatelessWidget {
         PathConstant.LOGIN: (context) => const MyHomePage(),
         PathConstant.MEAL_ROUTE: (context) => const MealScreen(),
        PathConstant.GROUP_DETAILS: (context) => const GroupDetailScreen(),
+       PathConstant.ORDER_DETAILS: (context) => const OrderDetailScreen(),
+       PathConstant.BILL_MANAGEMENT: (context) => const BillManagementScreen(),
+       PathConstant.BILL_CONFIRM: (context) => const BillConfirmScreen(),
 
       },
        initialRoute: PathConstant.INITIAL_ROUTE,
