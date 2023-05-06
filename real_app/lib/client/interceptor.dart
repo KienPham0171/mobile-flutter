@@ -38,6 +38,8 @@ class SecurityInterceptor extends Interceptor{
       // Gắn access_token vào header, gửi kèm access_token trong header mỗi khi call API
       options.headers['Authorization'] = "Bearer $accessToken";
       return handler.next(options);
+    }else{
+      return handler.next(options);
     }
 
 

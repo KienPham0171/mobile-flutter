@@ -11,10 +11,6 @@ class GroupService {
       ];
       try{
         await DioClient.dio.get("/e/groups")
-          /*  .then((value) async {
-          await Future.delayed(Duration(seconds: 5));
-          return value;
-        })*/
             .then((response) {
           if(response.statusCode == 200){
             BaseResponse res = BaseResponse.fromJson(response.data);
